@@ -8,7 +8,7 @@ namespace UserManagement.Controllers
     [Route("usuarios")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private IUsuarioService _usuarioService;
         public UsuarioController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;

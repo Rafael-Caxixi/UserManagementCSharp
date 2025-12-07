@@ -11,7 +11,7 @@ namespace UserManagement.Application.Services.Usuario
     public class UsuarioService : IUsuarioService
     {
 
-        private readonly IUsuarioRepository _usuarioRepository;
+        private IUsuarioRepository _usuarioRepository;
 
         public UsuarioService(IUsuarioRepository usuarioRepository)
         {
@@ -20,7 +20,7 @@ namespace UserManagement.Application.Services.Usuario
 
         public async Task CriarUsuarioUseCase(UsuarioEntity usuarioEntity)
         {
-            await _usuarioRepository.CriarUsuarioAsync(usuarioEntity);
+            await _usuarioRepository.CriarUsuarioAsync(new UsuarioEntity(usuarioEntity.Login, usuarioEntity.Senha, usuarioEntity.Cpf));
         }
     }
 }
