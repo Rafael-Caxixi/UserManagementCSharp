@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,27 @@ namespace UserManagement.Infrastructure.Repositories.Usuario
             _dbContext.Add(usuarioEntity);
             await _dbContext.SaveChangesAsync();
             return usuarioEntity;
+        }
+
+        public async Task DeletarUsuarioPorIdAsync(Guid id)
+        {
+            var usuarioExistente = await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            if(usuarioExistente == null)
+                throw new InvalidOperationException("Usuário não encontrado.");
+            _dbContext.Usuarios.Remove(usuarioExistente);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<UsuarioEntity> ListarUsuarioPorLoginAsync(string login)
+        {
+            return await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Login == login);
+        }
+
+        public async Task<IEnumerable<UsuarioEntity>> ListarUsuariosAsync()
+        {
+            return await _dbContext.Usuarios
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

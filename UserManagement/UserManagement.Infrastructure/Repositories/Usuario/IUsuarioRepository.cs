@@ -10,5 +10,8 @@ namespace UserManagement.Infrastructure.Repositories.Usuario
     public interface IUsuarioRepository
     {
         Task<UsuarioEntity> CriarUsuarioAsync(UsuarioEntity usuarioEntity);
+        Task<IEnumerable<UsuarioEntity>> ListarUsuariosAsync();
+        Task<UsuarioEntity> ListarUsuarioPorLoginAsync(string login);
+        Task DeletarUsuarioPorIdAsync(Guid id);
     }
 }
