@@ -14,6 +14,6 @@ namespace UserManagement.Application.Services.Usuario
         public Task<UsuarioResponseDTO> CriarUsuarioUseCase(UsuarioRequestDTO usuarioEntity);
         public Task<IEnumerable<UsuarioResponseDTO>> ListarUsuariosUseCase();
         public Task<UsuarioResponseDTO> ListarUsuarioPorLoginUseCase(string login);
-        public Task DeletarUsuarioPorIdUseCase(Guid id);
+        public Task DeletarUsuarioPorIdUseCase(long id);
     }
 }

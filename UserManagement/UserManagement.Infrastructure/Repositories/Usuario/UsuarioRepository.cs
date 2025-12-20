@@ -21,12 +21,20 @@ namespace UserManagement.Infrastructure.Repositories.Usuario
 
         public async Task<UsuarioEntity> CriarUsuarioAsync(UsuarioEntity usuarioEntity)
         {
-            _dbContext.Add(usuarioEntity);
-            await _dbContext.SaveChangesAsync();
-            return usuarioEntity;
+            try
+            {
+                _dbContext.Add(usuarioEntity);
+                await _dbContext.SaveChangesAsync();
+                return usuarioEntity;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
 
-        public async Task DeletarUsuarioPorIdAsync(Guid id)
+        public async Task DeletarUsuarioPorIdAsync(long id)
         {
             var usuarioExistente = await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
             if(usuarioExistente == null)

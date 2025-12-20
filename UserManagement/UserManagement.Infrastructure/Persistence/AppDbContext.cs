@@ -19,7 +19,6 @@ namespace UserManagement.Infrastructure.Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-
             base.OnModelCreating(modelBuilder);
 
             // Aplica naming convention para todas as propriedades

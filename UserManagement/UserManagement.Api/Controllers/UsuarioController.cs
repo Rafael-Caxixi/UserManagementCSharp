@@ -21,7 +21,7 @@ namespace UserManagement.Controllers
             try
             {
                 var usuarioRetorno = await _usuarioService.CriarUsuarioUseCase(usuarioRequestDTO);
-                return Ok(usuarioRetorno);
+                return Created($"usuarios/{usuarioRetorno.Id}", usuarioRetorno);
             }
             catch (Exception e)
             {
@@ -56,7 +56,7 @@ namespace UserManagement.Controllers
 
 
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeletarUsuarioPorId(Guid id)
+        public async Task<IActionResult> DeletarUsuarioPorId(long id)
         {
             await _usuarioService.DeletarUsuarioPorIdUseCase(id);
             return NoContent();

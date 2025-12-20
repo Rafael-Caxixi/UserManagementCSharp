@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserManagement.Application.DTOs.Request;
 using UserManagement.Application.DTOs.Response;
+using UserManagement.Application.Security;
 using UserManagement.Domain.Entities.Usuario;
 using UserManagement.Infrastructure.Repositories.Usuario;
 
@@ -15,10 +16,12 @@ namespace UserManagement.Application.Services.Usuario
     {
 
         private IUsuarioRepository _usuarioRepository;
+        private IPasswordHasher _passwordHasher;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher)
         {
             _usuarioRepository = usuarioRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<UsuarioResponseDTO> CriarUsuarioUseCase(UsuarioRequestDTO request)
@@ -31,7 +34,7 @@ namespace UserManagement.Application.Services.Usuario
 
             var novoUsuario = new UsuarioEntity(
                 request.Login,
-                request.Senha,
+                _passwordHasher.Hash(request.Senha),
                 request.Cpf
             );
 
@@ -45,7 +48,7 @@ namespace UserManagement.Application.Services.Usuario
             );
         }
 
-        public async Task DeletarUsuarioPorIdUseCase(Guid id)
+        public async Task DeletarUsuarioPorIdUseCase(long id)
         {
             await _usuarioRepository.DeletarUsuarioPorIdAsync(id);
         }

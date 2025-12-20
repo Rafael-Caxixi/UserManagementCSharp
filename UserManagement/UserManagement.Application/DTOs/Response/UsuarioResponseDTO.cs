@@ -8,12 +8,12 @@ namespace UserManagement.Application.DTOs.Response
 {
     public class UsuarioResponseDTO
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Login { get; set; }
         public string Cpf { get; set; }
         public DateTime DataCriacao { get; set; }
 
-        public UsuarioResponseDTO(Guid id, string login, string cpf, DateTime dataCriacao)
+        public UsuarioResponseDTO(long id, string login, string cpf, DateTime dataCriacao)
         {
             Id = id;
             Login = login;

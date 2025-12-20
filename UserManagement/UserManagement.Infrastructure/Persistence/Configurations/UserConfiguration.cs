@@ -17,17 +17,17 @@ namespace UserManagement.Infrastructure.Persistence.Configurations
 
             builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Login)
-                .IsRequired()
-                .HasMaxLength(50);
+            //builder.Property(u => u.Login)
+            //    .IsRequired()
+            //    .HasMaxLength(255);
 
-            builder.Property(u => u.Senha)
-                .IsRequired()
-                .HasMaxLength(50);
+            ////builder.Property(u => u.Senha)
+            ////    .IsRequired()
+            ////    .HasMaxLength(50);
 
-            builder.Property(u => u.Cpf)
-                .IsRequired()
-                .HasMaxLength(11);
+            //builder.Property(u => u.Cpf)
+            //    .IsRequired()
+            //    .HasMaxLength(11);
 
         }
     }
