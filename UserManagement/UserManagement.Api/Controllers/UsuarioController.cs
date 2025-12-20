@@ -55,7 +55,7 @@ namespace UserManagement.Controllers
         }
 
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeletarUsuarioPorId(long id)
         {
             await _usuarioService.DeletarUsuarioPorIdUseCase(id);

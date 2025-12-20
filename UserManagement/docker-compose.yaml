@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: usercrud-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: usercrud-sql
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "SenhaSqlServer18"
+      ACCEPT_EULA: "Y"

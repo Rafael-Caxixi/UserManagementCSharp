@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,9 @@ namespace UserManagement.Infrastructure.Persistence.Configurations
             //    .IsRequired()
             //    .HasMaxLength(255);
 
-            ////builder.Property(u => u.Senha)
-            ////    .IsRequired()
-            ////    .HasMaxLength(50);
+            builder.Property(u => u.Senha)
+                .IsRequired()
+                .HasMaxLength(255); 
 
             //builder.Property(u => u.Cpf)
             //    .IsRequired()

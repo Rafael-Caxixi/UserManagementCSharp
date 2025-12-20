@@ -24,15 +24,16 @@ namespace UserManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("UserManagement.Domain.Entities.Usuario.UsuarioEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("cpf");
 
                     b.Property<DateTime>("DataCriacao")
@@ -41,14 +42,13 @@ namespace UserManagement.Infrastructure.Migrations
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("login");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("senha");
 
                     b.HasKey("Id");
