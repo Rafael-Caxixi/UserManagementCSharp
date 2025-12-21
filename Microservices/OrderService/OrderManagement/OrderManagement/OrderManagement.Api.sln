@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36109.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement", "OrderManagement\OrderManagement.csproj", "{B0A52E3F-660C-42BA-8A94-4C2850B4CFCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement.Api", "OrderManagement.Api\OrderManagement.Api.csproj", "{06E7214D-D8B1-4BF4-A40E-E86996738118}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B0A52E3F-660C-42BA-8A94-4C2850B4CFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0A52E3F-660C-42BA-8A94-4C2850B4CFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0A52E3F-660C-42BA-8A94-4C2850B4CFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0A52E3F-660C-42BA-8A94-4C2850B4CFCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06E7214D-D8B1-4BF4-A40E-E86996738118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06E7214D-D8B1-4BF4-A40E-E86996738118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06E7214D-D8B1-4BF4-A40E-E86996738118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06E7214D-D8B1-4BF4-A40E-E86996738118}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4DC62494-9305-4AE6-9185-741B0A251D23}
+		SolutionGuid = {267E65EC-CB7E-4DB3-8C2D-41EA3CC9E4C3}
 	EndGlobalSection
 EndGlobal
