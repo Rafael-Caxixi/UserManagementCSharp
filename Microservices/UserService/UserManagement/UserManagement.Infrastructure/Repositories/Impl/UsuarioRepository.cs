@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.Application.DTOs.Response;
+using UserManagement.Application.Services.Interfaces;
 using UserManagement.Domain.Entities.Usuario;
 using UserManagement.Infrastructure.Persistence;
 
-namespace UserManagement.Infrastructure.Repositories.Usuario
+namespace UserManagement.Infrastructure.Repositories.Impl
 {
     public class UsuarioRepository : IUsuarioRepository
     {
@@ -41,6 +43,19 @@ namespace UserManagement.Infrastructure.Repositories.Usuario
                 throw new InvalidOperationException("Usuário não encontrado.");
             _dbContext.Usuarios.Remove(usuarioExistente);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<UsuarioDtoClient> ListarUsuarioPorIdAsync(long id)
+        {
+            return await _dbContext.Usuarios
+                .AsNoTracking()
+                .Where(u => u.Id == id)
+                .Select(u => new UsuarioDtoClient
+                {
+                    Id = u.Id,
+                    Login = u.Login,
+                })
+                .FirstOrDefaultAsync();
         }
 
         public async Task<UsuarioEntity> ListarUsuarioPorLoginAsync(string login)

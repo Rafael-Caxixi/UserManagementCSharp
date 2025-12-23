@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using UserManagement.Application.DTOs.Request;
-using UserManagement.Application.Services.Usuario;
+using UserManagement.Application.Services.Interfaces;
 using UserManagement.Domain.Entities.Usuario;
 
 namespace UserManagement.Controllers
@@ -54,12 +55,23 @@ namespace UserManagement.Controllers
             return Ok(usuario);
         }
 
-
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeletarUsuarioPorId(long id)
         {
             await _usuarioService.DeletarUsuarioPorIdUseCase(id);
             return NoContent();
+        }
+
+        //Retorna usuario caso exista (está sendo usado no HttpClient do Pedido)
+        [HttpGet("{userId:long}")]
+        public async Task<IActionResult> GetUserByIdAsync(long userId)
+        {
+            var user = await _usuarioService.ListarUsuarioPorIdUseCase(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
     }
 }

@@ -7,7 +7,7 @@ using UserManagement.Application.DTOs.Request;
 using UserManagement.Application.DTOs.Response;
 using UserManagement.Domain.Entities.Usuario;
 
-namespace UserManagement.Application.Services.Usuario
+namespace UserManagement.Application.Services.Interfaces
 {
     public interface IUsuarioService
     {
@@ -15,5 +15,6 @@ namespace UserManagement.Application.Services.Usuario
         public Task<IEnumerable<UsuarioResponseDTO>> ListarUsuariosUseCase();
         public Task<UsuarioResponseDTO> ListarUsuarioPorLoginUseCase(string login);
         public Task DeletarUsuarioPorIdUseCase(long id);
+        public Task<UsuarioDtoClient> ListarUsuarioPorIdUseCase(long id);
     }
 }

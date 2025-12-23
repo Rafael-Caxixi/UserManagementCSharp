@@ -1,14 +1,14 @@
-﻿using Azure.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagement.Application.DTOs.Request;
 using UserManagement.Application.DTOs.Response;
 using UserManagement.Application.Security;
+using UserManagement.Application.Services.Interfaces;
 using UserManagement.Domain.Entities.Usuario;
-using UserManagement.Infrastructure.Repositories.Usuario;
 
 namespace UserManagement.Application.Services.Usuario
 {
@@ -53,6 +53,11 @@ namespace UserManagement.Application.Services.Usuario
             await _usuarioRepository.DeletarUsuarioPorIdAsync(id);
         }
 
+        public async Task<UsuarioDtoClient> ListarUsuarioPorIdUseCase(long id)
+        {
+            return await _usuarioRepository.ListarUsuarioPorIdAsync(id);
+        }
+
         public async Task<UsuarioResponseDTO> ListarUsuarioPorLoginUseCase(string login)
         {
             var retorno = await _usuarioRepository.ListarUsuarioPorLoginAsync(login);
@@ -77,5 +82,7 @@ namespace UserManagement.Application.Services.Usuario
                 ));
             return listarDto;
         }
+
+
     }
 }

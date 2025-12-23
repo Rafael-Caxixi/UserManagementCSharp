@@ -2,9 +2,9 @@
 using Moq;
 using UserManagement.Application.DTOs.Request;
 using UserManagement.Application.Security;
+using UserManagement.Application.Services.Interfaces;
 using UserManagement.Application.Services.Usuario;
 using UserManagement.Domain.Entities.Usuario;
-using UserManagement.Infrastructure.Repositories.Usuario;
 using Xunit;
 
 namespace UserManagement.Tests.Services

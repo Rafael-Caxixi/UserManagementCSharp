@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Application.Security;
+using UserManagement.Application.Services.Interfaces;
 using UserManagement.Application.Services.Usuario;
 using UserManagement.Infrastructure.Persistence;
-using UserManagement.Infrastructure.Repositories.Usuario;
+using UserManagement.Infrastructure.Repositories.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +30,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
-
-
 
 if (app.Environment.IsDevelopment())
 {
