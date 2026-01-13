@@ -10,5 +10,6 @@ namespace OrderManagement.Application.Services.Interface.Repositories
     public interface IPedidoRepository
     {
         Task<PedidoEntity> CadastrarPedidoAsync(PedidoEntity pedidoEntity);
+        Task<List<PedidoEntity>> ListarPedidosAsync();
     }
 }

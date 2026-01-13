@@ -1,7 +1,9 @@
 ﻿using OrderManagement.Api.DTOs;
 using OrderManagement.Application.DTOs;
+using OrderManagement.Application.Events;
 using OrderManagement.Application.Services.Interface;
 using OrderManagement.Application.Services.Interface.Client;
+using OrderManagement.Application.Services.Interface.RabbitMQEnvio;
 using OrderManagement.Application.Services.Interface.Repositories;
 using OrderManagement.Domain.Entities;
 using System;
@@ -15,12 +17,14 @@ namespace OrderManagement.Application.Services.Impl
     public class PedidoService : IPedidoService
     {
         private readonly IPedidoRepository _pedidoRepository;
-        private readonly IUserClient  _userClient;
+        private readonly IUserClient _userClient;
+        private readonly IOrderPublisher _orderPublisher;
 
-        public PedidoService(IPedidoRepository pedidoRepository, IUserClient userClient)
+        public PedidoService(IPedidoRepository pedidoRepository, IUserClient userClient, IOrderPublisher orderPublisher)
         {
             _pedidoRepository = pedidoRepository;
             _userClient = userClient;
+            _orderPublisher = orderPublisher;
         }
 
 
@@ -31,10 +35,20 @@ namespace OrderManagement.Application.Services.Impl
                 //Checar se o usuário existe
                 var userExists = await _userClient.GetUserByIdAsync(pedidoRequestDTO.IdUsuario);
 
-                if(userExists == null) throw new Exception("Usuário não encontrado.");
+                if (userExists == null) throw new Exception("Usuário não encontrado.");
 
                 PedidoEntity resultado = await _pedidoRepository.CadastrarPedidoAsync(new PedidoEntity(userExists.Id, pedidoRequestDTO.QuantidadeItens));
 
+                //Enviando via kafka
+                OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(
+                    resultado.Id,
+                     resultado.IdUsuario,
+                    resultado.QuantidadeItens,
+                     resultado.DataPedido);
+                Console.WriteLine("Enviando evento no RabbitMQ");
+                _orderPublisher.PublishOrderCreatedEvent(orderCreatedEvent);
+
+                //Retorno
                 return new PedidoResponseDTO
                 {
                     Id = resultado.Id,
@@ -49,5 +63,21 @@ namespace OrderManagement.Application.Services.Impl
             }
 
         }
+        public async Task<List<PedidoResponseDTO>> ListarPedidos()
+        {
+            var lista = await _pedidoRepository.ListarPedidosAsync();
+
+            var listaDto = lista.Select(p => new PedidoResponseDTO
+            {
+                Id = p.Id,
+                DataPedido = p.DataPedido,
+                Status = p.Status,
+                QuantidadeItens = p.QuantidadeItens
+            }).ToList();
+
+            return listaDto;
+        }
+
+
     }
 }

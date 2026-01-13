@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.DTOs;
 using OrderManagement.Application.Services.Interface;
 
@@ -28,6 +29,21 @@ namespace OrderManagement.Api.Controllers
                 throw new Exception(e.Message);
             }
             
+        }
+
+        [HttpGet("listar-pedidos")]
+        public async Task<IActionResult> ListarPedidos()
+        {
+            try
+            {
+                var resultado = await _pedidoService.ListarPedidos();
+                return Ok(resultado);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
 
     }

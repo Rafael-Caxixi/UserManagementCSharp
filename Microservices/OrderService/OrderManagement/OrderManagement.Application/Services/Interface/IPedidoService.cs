@@ -6,5 +6,6 @@ namespace OrderManagement.Application.Services.Interface
     public interface IPedidoService
     {
         Task<PedidoResponseDTO> CadastrarPedido(PedidoRequestDTO pedidoRequestDTO);
+        Task<List<PedidoResponseDTO>> ListarPedidos();
     }
 }

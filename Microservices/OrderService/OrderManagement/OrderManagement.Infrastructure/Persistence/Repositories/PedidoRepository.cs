@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Services.Interface.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderManagement.Application.Services.Interface.Repositories;
 using OrderManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ namespace OrderManagement.Infrastructure.Persistence.Repositories
             _dbContext.Pedidos.Add(pedidoEntity);
             await _dbContext.SaveChangesAsync();
             return pedidoEntity;
+        }
+
+        public async Task<List<PedidoEntity>> ListarPedidosAsync()
+        {
+            return await _dbContext.Pedidos.ToListAsync();
         }
     }
 }

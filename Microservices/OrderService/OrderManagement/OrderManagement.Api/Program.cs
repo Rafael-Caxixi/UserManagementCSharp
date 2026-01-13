@@ -3,9 +3,11 @@ using OrderManagement.Api.Client.Impl;
 using OrderManagement.Application.Services.Impl;
 using OrderManagement.Application.Services.Interface;
 using OrderManagement.Application.Services.Interface.Client;
+using OrderManagement.Application.Services.Interface.RabbitMQEnvio;
 using OrderManagement.Application.Services.Interface.Repositories;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Persistence.Repositories;
+using OrderManagement.Infrastructure.RabbitMQEnvio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+
+builder.Services.AddScoped<IOrderPublisher, OrderPublisher>();
+builder.Services.AddScoped<IEventPublisher, RabbitMqPublisher>();
+
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection("RabbitMQ"));
+
+
+
 //builder.Services.AddScoped<IUserClient, UserClient>();
 
 //builder.Services.AddHttpClient<IUserClient, UserClient>(client =>
@@ -37,12 +48,17 @@ builder.Services.AddHttpClient<IUserClient, UserClient>(client =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
 }
+
+
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
