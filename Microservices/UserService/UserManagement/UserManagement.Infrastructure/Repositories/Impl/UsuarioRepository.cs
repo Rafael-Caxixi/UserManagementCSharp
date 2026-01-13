@@ -45,6 +45,11 @@ namespace UserManagement.Infrastructure.Repositories.Impl
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<UsuarioEntity> GetByLoginAsync(string login)
+        {
+            return await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Login.Equals(login));
+        }
+
         public async Task<UsuarioDtoClient> ListarUsuarioPorIdAsync(long id)
         {
             return await _dbContext.Usuarios

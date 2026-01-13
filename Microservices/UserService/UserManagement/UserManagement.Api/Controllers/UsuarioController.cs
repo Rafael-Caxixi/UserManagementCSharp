@@ -1,22 +1,28 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using UserManagement.Application.DTOs.Request;
 using UserManagement.Application.Services.Interfaces;
 using UserManagement.Domain.Entities.Usuario;
+using UserManagement.Infrastructure.Security;
 
 namespace UserManagement.Controllers
 {
     [ApiController]
     [Route("usuarios")]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private IUsuarioService _usuarioService;
-        public UsuarioController(IUsuarioService usuarioService)
+        private IAuthService _authService;
+        public UsuarioController(IUsuarioService usuarioService, IAuthService authService)
         {
             _usuarioService = usuarioService;
+            _authService = authService;
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CriarUsuario([FromBody] UsuarioRequestDTO usuarioRequestDTO)
         {
             try
@@ -44,16 +50,25 @@ namespace UserManagement.Controllers
             }
         }
 
-        [HttpGet("{login}")]
-        public async Task<IActionResult> ListarUsuarioPorLogin(string login)
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
         {
-            var usuario = await _usuarioService.ListarUsuarioPorLoginUseCase(login);
+            var token = await _authService.LoginAsync(request.Login, request.Password);
+            if (token == null) return Unauthorized("Login ou senha inválidos");
 
-            if (usuario == null)
-                return NotFound();
-
-            return Ok(usuario);
+            return Ok(token);
         }
+        //[HttpGet("{login}")]
+        //public async Task<IActionResult> ListarUsuarioPorLogin(string login)
+        //{
+        //    var usuario = await _usuarioService.ListarUsuarioPorLoginUseCase(login);
+
+        //    if (usuario == null)
+        //        return NotFound();
+
+        //    return Ok(usuario);
+        //}
 
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeletarUsuarioPorId(long id)

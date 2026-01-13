@@ -15,4 +15,5 @@ public interface IUsuarioRepository
     Task<UsuarioEntity> ListarUsuarioPorLoginAsync(string login);
     Task DeletarUsuarioPorIdAsync(long id);
     Task<UsuarioDtoClient> ListarUsuarioPorIdAsync(long id);
+    Task<UsuarioEntity> GetByLoginAsync(string login);
 }
