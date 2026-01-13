@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  # ================= USER =================
+  sqlserver-user:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-user
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "SenhaSqlServer18"
+    ports:
+      - "14331:1433"
+    volumes:
+      - sqlserver_user_data:/var/opt/mssql
+
+  user-service:
+    build:
+      context: ../UserService/UserManagement
+      dockerfile: UserManagement.Api/Dockerfile
+    container_name: user-service
+    ports:
+      - "8081:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ConnectionStrings__DefaultConnection: "Server=sqlserver-user;Database=db_usuarios;User Id=sa;Password=SenhaSqlServer18;TrustServerCertificate=True;Encrypt=False"
+      RabbitMq__Host: rabbitmq
+    depends_on:
+      - rabbitmq
+      - sqlserver-user
+
+  # ================= ORDER =================
+  sqlserver-order:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-order
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "SenhaSqlServer18"
+    ports:
+      - "14332:1433"
+    volumes:
+      - sqlserver_order_data:/var/opt/mssql
+
+  order-service:
+    build:
+      context: ../OrderService/OrderManagement
+      dockerfile: OrderManagement.Api/Dockerfile
+    container_name: order-service
+    ports:
+      - "8082:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ConnectionStrings__DefaultConnection: "Server=sqlserver-order;Database=db_pedidos;User Id=sa;Password=SenhaSqlServer18;TrustServerCertificate=True;Encrypt=False"
+      RabbitMq__Host: rabbitmq
+    depends_on:
+      - rabbitmq
+      - sqlserver-order
+
+  # ================= INVENTORY =================
+  sqlserver-inventory:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-inventory
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "SenhaSqlServer18"
+    ports:
+      - "14333:1433"
+    volumes:
+      - sqlserver_inventory_data:/var/opt/mssql
+
+  inventory-worker:
+    build:
+      context: ../InventoryService/InventoryWorker
+      dockerfile: InventoryWorker/Dockerfile
+    container_name: inventory-worker
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ConnectionStrings__DefaultConnection: "Server=sqlserver-inventory,1433;Database=InventoryDb;User Id=sa;Password=SenhaSqlServer18;TrustServerCertificate=True;Encrypt=False"
+      RabbitMq__Host: rabbitmq
+    depends_on:
+      - rabbitmq
+      - sqlserver-inventory
+
+volumes:
+  sqlserver_user_data:
+  sqlserver_order_data:
+  sqlserver_inventory_data:
